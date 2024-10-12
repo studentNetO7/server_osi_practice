@@ -10,11 +10,23 @@ import java.net.UnknownHostException;
 public class Client {
 
     public static void main(String[] args) {
-        try (Socket clientSocket = new Socket("localHost", Server.PORT);
+        try (Socket clientSocket = new Socket("netology.homework", Server.PORT);
              PrintWriter printWriterClient = new PrintWriter(clientSocket.getOutputStream(), true);
-             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) {
-            printWriterClient.println("Петя!");
-            System.out.println("Ответ сервера:" + bufferedReader.readLine());
+             BufferedReader bufferedReaderClient = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) {
+
+//            Шаг 1: Чтение запроса имени
+            System.out.println(bufferedReaderClient.readLine()); // выводим запрос имени в консоль
+            BufferedReader userInput = new BufferedReader(new InputStreamReader(System.in));
+            String name = userInput.readLine();
+            printWriterClient.println(name);// Отправка имени
+
+//            Шаг 2: Чтение запроса категории возраста
+            System.out.println(bufferedReaderClient.readLine());// выводим запрос категории возраста в консоль
+            String myResponse = userInput.readLine();
+            printWriterClient.println(myResponse);// Отправка "yes/no"
+
+//            Шаг 3: Получение ответа сервера
+            System.out.println(bufferedReaderClient.readLine());
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
